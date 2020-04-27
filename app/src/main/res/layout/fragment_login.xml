@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel" type="com.example.app_37_brilliantapp.login.LoginViewModel" />
+        <variable
+            name="fragment" type="com.example.app_37_brilliantapp.login.LoginFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".login.LoginFragment"
+        android:background="@drawable/authentication_background_color"
+        android:backgroundTint="@color/authenticationBackgroundTint"
+        android:backgroundTintMode="add"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            android:id="@+id/fragment_log_in_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="18dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:shadowColor="#29000000"
+            android:shadowDx="0"
+            android:shadowDy="10"
+            android:shadowRadius="10"
+            android:text="@string/fragment_log_in_subtitleText"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/fragment_log_in_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:shadowColor="#29000000"
+            android:shadowDx="0"
+            android:shadowDy="10"
+            android:shadowRadius="10"
+            android:text="@string/fragment_log_in_titleText"
+            android:textColor="@android:color/white"
+            android:textSize="35sp"
+            app:layout_constraintStart_toStartOf="@+id/fragment_log_in_subtitle"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_log_in_subtitle" />
+
+        <EditText
+            android:id="@+id/fragment_log_in_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp"
+            android:background="@drawable/authentication_field_background"
+            android:text="@={viewModel.email}"
+            android:hint="@string/fragment_log_in_emailHint"
+            android:paddingStart="9dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="11dp"
+            android:textColorHint="@color/authenticationHintTextColor"
+            android:textCursorDrawable="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_log_in_title"
+            app:layout_constraintVertical_bias="0.100000024" />
+
+        <EditText
+            android:id="@+id/fragment_log_in_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="41dp"
+            android:layout_marginEnd="34dp"
+            android:background="@drawable/authentication_field_background"
+            android:text="@={viewModel.password}"
+            android:hint="@string/fragment_log_in_passwordHint"
+            android:paddingStart="9dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="11dp"
+            android:textCursorDrawable="@null"
+            android:textColorHint="@color/authenticationHintTextColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_log_in_email" />
+
+        <Button
+            android:id="@+id/fragment_log_in_button"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="58dp"
+            android:background="@drawable/authentication_button_background"
+            android:fontFamily="@font/montserrat_medium"
+            android:paddingStart="58dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="57dp"
+            android:paddingBottom="9dp"
+            android:text="@string/fragment_log_in_buttonText"
+            android:textSize="16sp"
+            android:onClick="@{() -> viewModel.startLoginEvent()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_log_in_password" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

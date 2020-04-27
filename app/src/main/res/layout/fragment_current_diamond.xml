@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.google.firebase.auth.FirebaseAuth"/>
+        <import type="android.view.View"/>
+        <variable
+            name="fragment" type="com.example.app_37_brilliantapp.currentdiamond.CurrentDiamondFragment" />
+        <variable
+            name="viewModel" type="com.example.app_37_brilliantapp.currentdiamond.CurrentDiamondViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/current_diamond_background"
+        android:backgroundTint="@color/currentDiamondBackgroundTint"
+        android:backgroundTintMode="src_atop"
+        tools:context=".currentdiamond.CurrentDiamondFragment">
+
+        <TextView
+            android:id="@+id/current_diamond_fragment_welcomeMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:shadowColor="#29000000"
+            android:shadowDx="0"
+            android:shadowDy="10"
+            android:shadowRadius="10"
+            android:text="@string/current_diamond_fragment_welcomeMessageText"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/current_diamond_fragment_userName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/montserrat_semibold"
+            android:shadowColor="#29000000"
+            android:shadowDx="0"
+            android:shadowDy="10"
+            android:shadowRadius="10"
+            android:text="@{FirebaseAuth.getInstance().currentUser.displayName}"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/current_diamond_fragment_logoutButton"
+            app:layout_constraintStart_toStartOf="@+id/current_diamond_fragment_welcomeMessage"
+            app:layout_constraintTop_toBottomOf="@+id/current_diamond_fragment_welcomeMessage" />
+
+        <Button
+            android:id="@+id/current_diamond_fragment_logoutButton"
+            style="?borderlessButtonStyle"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/regular_button_background"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/current_diamond_fragment_logoutButtonText"
+            android:textSize="16sp"
+            android:onClick="@{() -> viewModel.startLogoutEvent()}"
+            app:layout_constraintBottom_toBottomOf="@+id/current_diamond_fragment_userName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/current_diamond_fragment_welcomeMessage" />
+
+        <TextView
+            android:id="@+id/current_diamond_fragment_noDiamondsMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="@string/current_diamond_fragment_noDiamondsMessageText"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:visibility="@{viewModel.noDiamond ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.40" />
+
+        <Button
+            android:id="@+id/current_diamond_fragment_findDiamondButton"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="41dp"
+            android:background="@drawable/regular_button_background"
+            android:fontFamily="@font/montserrat_medium"
+            android:onClick="@{() -> viewModel.startFindTheDiamondEvent()}"
+            android:paddingStart="40dp"
+            android:paddingEnd="40dp"
+            android:text="@string/current_diamond_fragment_findDiamondButtonText"
+            android:textSize="16sp"
+            android:visibility="@{viewModel.noDiamond ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="@+id/current_diamond_fragment_noDiamondsMessage"
+            app:layout_constraintStart_toStartOf="@+id/current_diamond_fragment_noDiamondsMessage"
+            app:layout_constraintTop_toBottomOf="@+id/current_diamond_fragment_noDiamondsMessage" />
+
+        <com.example.app_37_brilliantapp.custom.BrilliantProgressBar
+            android:id="@+id/brilliantProgressBar"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.39"
+            android:visibility="@{viewModel.noDiamond ? View.GONE : View.VISIBLE}"/>
+
+        <TextView
+            android:id="@+id/current_diamond_fragment_currentDiamondTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@{viewModel.diamondName}"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/brilliantProgressBar"
+            android:visibility="@{viewModel.noDiamond ? View.GONE : View.VISIBLE}"/>
+
+        <Button
+            android:id="@+id/current_diamond_fragment_diamondDoneButton"
+            style="?borderlessButtonStyle"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/regular_button_background"
+            android:fontFamily="@font/montserrat_medium"
+            android:onClick="@{() -> viewModel.startGetDiamondEvent()}"
+            android:text="@string/current_diamond_fragment_diamondDoneButtonText"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/current_diamond_fragment_diamondCancelButton"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/current_diamond_fragment_currentDiamondTitle"
+            android:visibility="@{viewModel.noDiamond ? View.GONE : View.VISIBLE}"/>
+
+        <Button
+            android:id="@+id/current_diamond_fragment_diamondCancelButton"
+            style="?borderlessButtonStyle"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/regular_button_background"
+            android:fontFamily="@font/montserrat_medium"
+            android:onClick="@{() -> viewModel.startCancelDiamondEvent()}"
+            android:text="@string/current_diamond_fragment_diamondCancelButtonText"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/current_diamond_fragment_diamondDoneButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/current_diamond_fragment_diamondDoneButton"
+            app:layout_constraintTop_toTopOf="@+id/current_diamond_fragment_diamondDoneButton"
+            android:visibility="@{viewModel.noDiamond ? View.GONE : View.VISIBLE}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

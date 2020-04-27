@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="viewHolder"
+            type="com.example.app_37_brilliantapp.ideas.IdeasRecyclerAdapter.RecyclerHolder" />
+        <variable
+            name="idea"
+            type="com.example.app_37_brilliantapp.data.Idea" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/ideas_recycler_item_checkbox"
+            style="?borderlessButtonStyle"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/idea_checkbox_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="@{() -> viewHolder.onCheckboxClick()}"
+            android:onLongClick="@{(view) -> viewHolder.onCheckboxLongClick(view)}"
+            android:visibility="@{idea.done ? View.INVISIBLE : View.VISIBLE}"/>
+
+        <ImageButton
+            android:id="@+id/ideas_recycler_item_checkbox_done"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginStart="4dp"
+            android:background="@drawable/idea_done_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleX="@{idea.done ? 1.0F : 0.01F}"
+            android:scaleY="@{idea.done ? 1.0F : 0.01F}"
+            android:onClick="@{() -> viewHolder.onCheckboxClick()}"
+            android:onLongClick="@{(view) -> viewHolder.onCheckboxLongClick(view)}"
+            android:visibility="@{idea.done ? View.VISIBLE : View.INVISIBLE}"/>
+
+        <ImageButton
+            android:id="@+id/ideas_recycler_item_checkbox_delete"
+            style="?borderlessButtonStyle"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginStart="4dp"
+            android:scaleX="0.01"
+            android:scaleY="0.01"
+            android:background="@drawable/idea_delete_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="@{() -> viewHolder.onDeleteIdeaClick()}"
+            android:onLongClick="@{(view) -> viewHolder.onCheckboxLongClick(view)}"
+            android:visibility="invisible"/>
+
+        <com.example.app_37_brilliantapp.custom.AnimatedText
+            android:id="@+id/ideas_recycler_item_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:fontFamily="@font/montserrat_light"
+            android:shadowColor="#29000000"
+            android:shadowDx="0"
+            android:shadowDy="10"
+            android:shadowRadius="10"
+            android:text="@{idea.title}"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ideas_recycler_item_checkbox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/ideas_recycler_item_checkbox"
+            app:layout_constraintTop_toTopOf="@+id/ideas_recycler_item_checkbox" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

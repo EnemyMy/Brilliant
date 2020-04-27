@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="fragment"
+            type="com.example.app_37_brilliantapp.finddiamond.FindTheDiamondFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.example.app_37_brilliantapp.finddiamond.FindTheDiamondViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/find_the_diamond_background"
+        android:backgroundTint="@color/findTheDiamondBackgroundTint"
+        android:backgroundTintMode="src_atop"
+        tools:context=".finddiamond.FindTheDiamondFragment">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/fragment_getDiamond_BackButton"
+            style="?borderlessButtonStyle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/back_button_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.09"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.050000012"
+            android:onClick="@{() -> fragment.onBackButtonClick()}"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/fragment_findTheDiamond_InfoButton"
+            style="?borderlessButtonStyle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/info_button_background"
+            app:layout_constraintBottom_toBottomOf="@+id/fragment_getDiamond_BackButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.91"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fragment_getDiamond_BackButton"
+            android:onClick="@{() -> fragment.onInfoButtonClick()}"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/fragment_findTheDiamond_card"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="40dp"
+            android:elevation="4dp"
+            app:contentPaddingLeft="14dp"
+            app:contentPaddingRight="14dp"
+            app:contentPaddingTop="17dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.48"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_getDiamond_BackButton"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintWidth_percent="0.82">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/fragment_findTheDiamond_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:shadowColor="#29000000"
+                    android:shadowDx="0"
+                    android:shadowDy="10"
+                    android:shadowRadius="10"
+                    android:text="@string/fragment_findTheDiamond_titleText"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/fragment_findTheDiamond_editTextDiamondName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="27dp"
+                    android:shadowRadius="0"
+                    android:shadowColor="@android:color/white"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:hint="@string/fragment_findTheDiamond_editTextDiamondNameHint"
+                    android:text="@={viewModel.diamondName}"
+                    android:inputType="text"
+                    android:textColorHint="@color/findTheDiamondHintTextColor"
+                    android:textCursorDrawable="@null"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_findTheDiamond_title" />
+
+                <EditText
+                    android:id="@+id/fragment_findTheDiamond_editTextPolishTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:shadowRadius="0"
+                    android:shadowColor="@android:color/white"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:hint="@string/fragment_findTheDiamond_editTextPolishTimeHint"
+                    android:text="@={viewModel.polishTime}"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:imeOptions="actionDone"
+                    android:inputType="none"
+                    android:textColorHint="@color/findTheDiamondHintTextColor"
+                    android:longClickable="false"
+                    android:maxLines="1"
+                    android:textCursorDrawable="@null"
+                    android:textSize="15sp"
+                    android:onClick="@{(v) -> viewModel.setPolishTime(v)}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_findTheDiamond_editTextDiamondName" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/fragment_findTheDiamond_button"
+                    style="?borderlessButtonStyle"
+                    android:scaleType="centerInside"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/find_the_diamond_button"
+                    android:src="@drawable/diamond_icon"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:onClick="@{() -> viewModel.startSaveDiamondEvent()}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_findTheDiamond_editTextPolishTime"
+                    app:layout_constraintVertical_bias="0.65999997" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/fragment_findTheDiamond_quote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/pristina"
+            android:text="@string/fragment_findTheDiamond_quoteText"
+            android:textColor="@color/quoteTextColor"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_findTheDiamond_fakeInfoCard" />
+
+        <FrameLayout
+            android:id="@+id/fragment_findTheDiamond_fakeInfoCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fragment_findTheDiamond_InfoButton"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintWidth_percent="0.84"
+            android:visibility="invisible">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/fragment_findTheDiamond_fakeInfoCard_logo"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/diamond_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/fragment_findTheDiamond_fakeInfoCard_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="32dp"
+                    android:fontFamily="@font/montserrat_light"
+                    android:text="@string/fragment_findTheDiamond_InfoCard_Text"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_findTheDiamond_fakeInfoCard_logo" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </FrameLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/fragment_findTheDiamond_infoCard"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/fragment_findTheDiamond_InfoButton"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fragment_findTheDiamond_InfoButton"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintWidth_percent="0.84">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/fragment_findTheDiamond_infoCard_logo"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="18dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/diamond_icon"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/fragment_findTheDiamond_infoCard_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_marginBottom="32dp"
+                    android:fontFamily="@font/montserrat_light"
+                    android:text="@string/fragment_findTheDiamond_InfoCard_Text"
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/fragment_findTheDiamond_infoCard_logo" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="viewModel" type="com.example.app_37_brilliantapp.signup.SignupViewModel" />
+        <variable
+            name="fragment" type="com.example.app_37_brilliantapp.signup.SignupFragment" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/authentication_background_color"
+        android:backgroundTint="@color/authenticationBackgroundTint"
+        android:backgroundTintMode="add"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        tools:context=".signup.SignupFragment">
+
+        <TextView
+            android:id="@+id/fragment_sign_up_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="18dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:shadowColor="#29000000"
+            android:shadowDx="0"
+            android:shadowDy="10"
+            android:shadowRadius="10"
+            android:text="@string/fragment_sign_up_subtitleText"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/fragment_sign_up_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:shadowColor="#29000000"
+            android:shadowDx="0"
+            android:shadowDy="10"
+            android:shadowRadius="10"
+            android:text="@string/fragment_sign_up_titleText"
+            android:textColor="@android:color/white"
+            android:textSize="35sp"
+            app:layout_constraintStart_toStartOf="@+id/fragment_sign_up_subtitle"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_sign_up_subtitle" />
+
+        <EditText
+            android:id="@+id/fragment_sign_up_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginEnd="34dp"
+            android:background="@drawable/authentication_field_background"
+            android:hint="@string/fragment_sign_up_emailHint"
+            android:paddingStart="9dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="11dp"
+            android:text="@={viewModel.email}"
+            android:textColorHint="@color/authenticationHintTextColor"
+            android:textCursorDrawable="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_sign_up_title"
+            app:layout_constraintVertical_bias="0.100000024" />
+
+        <EditText
+            android:id="@+id/fragment_sign_up_password"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="41dp"
+            android:layout_marginEnd="34dp"
+            android:background="@drawable/authentication_field_background"
+            android:hint="@string/fragment_sign_up_passwordHint"
+            android:paddingStart="9dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="11dp"
+            android:text="@={viewModel.password}"
+            android:textColorHint="@color/authenticationHintTextColor"
+            android:textCursorDrawable="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_sign_up_email" />
+
+        <EditText
+            android:id="@+id/fragment_sign_up_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="41dp"
+            android:layout_marginEnd="34dp"
+            android:background="@drawable/authentication_field_background"
+            android:hint="@string/fragment_sign_up_nameHint"
+            android:paddingStart="9dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="11dp"
+            android:text="@={viewModel.name}"
+            android:textColorHint="@color/authenticationHintTextColor"
+            android:textCursorDrawable="@null"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_sign_up_password" />
+
+        <Button
+            android:id="@+id/fragment_sign_up_button"
+            style="?borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="58dp"
+            android:background="@drawable/authentication_button_background"
+            android:fontFamily="@font/montserrat_medium"
+            android:onClick="@{() -> viewModel.startSignupEvent()}"
+            android:paddingStart="58dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="57dp"
+            android:paddingBottom="9dp"
+            android:text="@string/fragment_sign_up_buttonText"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_sign_up_name" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/fragment_sign_up_google_button"
+            style="?borderlessButtonStyle"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="21dp"
+            android:background="@drawable/google_button_background"
+            android:onClick="@{(v) -> fragment.onGoogleButtonClick(v)}"
+            app:layout_constraintEnd_toStartOf="@+id/fragment_sign_up_facebook_button"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="@+id/fragment_sign_up_button"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_sign_up_button" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/fragment_sign_up_facebook_button"
+            style="?borderlessButtonStyle"
+            android:layout_width="37dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="17dp"
+            android:background="@drawable/facebook_button_background"
+            android:onClick="@{(v) -> fragment.onFacebookButtonClick(v)}"
+            app:layout_constraintEnd_toEndOf="@+id/fragment_sign_up_button"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/fragment_sign_up_google_button"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_sign_up_button" />
+
+        <TextView
+            android:id="@+id/fragment_sign_up_login_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="@+id/fragment_sign_up_button"
+            app:layout_constraintStart_toStartOf="@+id/fragment_sign_up_button"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_sign_up_facebook_button" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

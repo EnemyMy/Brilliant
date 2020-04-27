@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">BrilliantApp</string>
+    <string name="current_diamond_fragment_welcomeMessageText">Hi</string>
+    <string name="current_diamond_fragment_logoutButtonText">Logout</string>
+    <string name="current_diamond_fragment_noDiamondsMessageText">You don\'t have current diamond yet</string>
+    <string name="current_diamond_fragment_findDiamondButtonText">Find it</string>
+    <string name="current_diamond_fragment_diamondDoneButtonText">Done</string>
+    <string name="current_diamond_fragment_diamondCancelButtonText">Cancel</string>
+    <string name="earned_diamonds_fragment_titleText">Diamonds:</string>
+    <string name="fragment_findTheDiamond_titleText">Find the diamond</string>
+    <string name="fragment_findTheDiamond_editTextDiamondNameHint">Diamond name</string>
+    <string name="fragment_findTheDiamond_editTextPolishTimeHint">Polish time</string>
+    <string name="fragment_findTheDiamond_quoteText">Be fair; Be strong; Be shiny; Be diamond</string>
+    <string name="fragment_findTheDiamond_InfoCard_Text">Each person has goals in life, for example, to read a book or learn a new language. We think that you also have them. Each accomplished goal makes you stronger and allows you to complete more complex goals. More simply: accomplished goal = self-improvement. That is why we call planned goals diamonds. Think and start your journey to your next diamond. \n\n\nCaution! Choose your diamonds wisely and go all the way. It won’t make much sense if you cancel them or stop halfway</string>
+    <string name="fragment_getDiamond_titleText">Success!\n Get your diamond</string>
+    <string name="fragment_getDiamond_rateText">Please rate the diamond difficulty</string>
+    <string name="fragment_getDiamond_quoteText">Be fair; Be strong; Be shiny; Be diamond</string>
+    <string name="ideas_fragment_titleText">Today\'s ideas</string>
+    <string name="ideas_fragment_addIdeaButtonText">Add idea</string>
+    <string name="ideas_fragment_addIdeaCard_titleText">What are you planning to do today?</string>
+    <string name="ideas_fragment_addIdeaCard_editTextHint">Your idea</string>
+    <string name="fragment_log_in_subtitleText">Welcome back!</string>
+    <string name="fragment_log_in_titleText">Log in</string>
+    <string name="fragment_log_in_emailHint">Email</string>
+    <string name="fragment_log_in_passwordHint">Password</string>
+    <string name="fragment_log_in_buttonText">Log in</string>
+    <string name="fragment_sign_up_subtitleText">Hello!</string>
+    <string name="fragment_sign_up_titleText">Sign up</string>
+    <string name="fragment_sign_up_emailHint">Email</string>
+    <string name="fragment_sign_up_passwordHint">Password</string>
+    <string name="fragment_sign_up_nameHint">First name</string>
+    <string name="fragment_sign_up_buttonText">Sign up</string>
+
+</resources>

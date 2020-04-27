@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="fragment"
+            type="com.example.app_37_brilliantapp.ideas.IdeasFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.example.app_37_brilliantapp.ideas.IdeasViewModel" />
+    </data>
+
+    <ScrollView
+        tools:context=".ideas.IdeasFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/ideas_background"
+        android:backgroundTint="@color/ideasBackgroundTint"
+        android:backgroundTintMode="src_atop">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/ideas_fragment_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:fontFamily="@font/montserrat_medium"
+                android:shadowColor="#29000000"
+                android:shadowDx="0"
+                android:shadowDy="10"
+                android:shadowRadius="10"
+                android:text="@string/ideas_fragment_titleText"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toStartOf="@+id/ideas_fragment_addIdeaButton"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/ideas_fragment_addIdeaButton"
+                style="?borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/regular_button_background"
+                android:fontFamily="@font/montserrat_medium"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="@string/ideas_fragment_addIdeaButtonText"
+                android:textColor="@android:color/black"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:onClick="@{() -> fragment.onCreateIdeaButtonCLick()}" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ideas_fragment_listBackground"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="6dp"
+                app:contentPaddingBottom="32dp"
+                app:contentPaddingLeft="8dp"
+                app:contentPaddingRight="8dp"
+                app:contentPaddingTop="26dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ideas_fragment_addIdeaButton"
+                android:visibility="@{viewModel.noIdeas ? View.INVISIBLE : View.VISIBLE}">
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/ideas_fragment_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:nestedScrollingEnabled="false"
+                        android:descendantFocusability="beforeDescendants"
+                        android:overScrollMode="never" />
+
+                </HorizontalScrollView>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/ideas_fragment_addIdeaCard"
+                android:layout_width="272dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:scaleX="0.01"
+                android:scaleY="0.01"
+                android:transformPivotX="272dp"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="gone">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/ideas_fragment_addIdeaCard_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="16dp"
+                        android:fontFamily="@font/montserrat_light"
+                        android:text="@string/ideas_fragment_addIdeaCard_titleText"
+                        android:textColor="@android:color/black"
+                        android:textSize="10sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <EditText
+                        android:id="@+id/ideas_fragment_addIdeaCard_editText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="32dp"
+                        android:layout_marginEnd="24dp"
+                        android:layout_marginBottom="32dp"
+                        android:fontFamily="@font/montserrat_regular"
+                        android:hint="@string/ideas_fragment_addIdeaCard_editTextHint"
+                        android:text="@={viewModel.newIdeaName}"
+                        android:inputType="text"
+                        android:textColorHint="@android:color/black"
+                        android:textCursorDrawable="@null"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/ideas_fragment_addIdeaCard_button"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ideas_fragment_addIdeaCard_title" />
+
+                    <ImageButton
+                        android:id="@+id/ideas_fragment_addIdeaCard_button"
+                        style="?borderlessButtonStyle"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/done_icon"
+                        android:onClick="@{() -> fragment.onCreateIdeaCardButtonCLick()}"
+                        app:layout_constraintBottom_toBottomOf="@+id/ideas_fragment_addIdeaCard_editText"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/ideas_fragment_addIdeaCard_editText"
+                        app:layout_constraintVertical_bias="0.7" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

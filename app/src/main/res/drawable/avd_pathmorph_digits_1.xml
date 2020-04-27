@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:name="vector"
+            android:width="18dp"
+            android:height="18dp"
+            android:viewportHeight="1"
+            android:viewportWidth="1">
+            <group
+                android:name="group"
+                android:pivotX="1"
+                android:pivotY="1"
+                android:translateX="@dimen/digit_translateX"
+                android:translateY="@dimen/digit_translateY"
+                android:scaleY="0.0005">
+                <path
+                    android:name="iconpath"
+                    android:pathData="M 0.425414364640884, 0.113259668508287
+    C 0.425414364640884, 0.113259668508287 0.577348066298343, 0.113259668508287 0.577348066298343, 0.113259668508287
+    C 0.577348066298343, 0.113259668508287 0.577348066298343, 1                 0.577348066298343, 1
+    C 0.577348066298343, 1                 0.577348066298343, 1                 0.577348066298343, 1
+    C 0.577348066298343, 1                 0.577348066298343, 1                 0.577348066298343, 1"
+                    android:strokeColor="@android:color/white"
+                    android:strokeWidth="0.028"
+                    android:strokeLineCap="square"/>
+            </group>
+        </vector>
+    </aapt:attr>
+    <target android:name="group">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="602"
+                    android:valueFrom="0.0005"
+                    android:valueTo="0.9"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/overshoot_interpolator"/>
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:startOffset="602"
+                    android:duration="198"
+                    android:valueFrom="0.9"
+                    android:valueTo="1"
+                    android:valueType="floatType"
+                    android:interpolator="@android:anim/decelerate_interpolator"/>
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>

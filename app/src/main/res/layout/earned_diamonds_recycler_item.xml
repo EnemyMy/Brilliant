@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        <import type="com.example.app_37_brilliantapp.data.Difficulty"/>
+        <variable
+            name="diamond"
+            type="com.example.app_37_brilliantapp.data.EarnedDiamond" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_height="300dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/earned_diamonds_recycler_item_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:cardElevation="4dp"
+            app:cardCornerRadius="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/earned_diamonds_recycler_item_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:elevation="4dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:shadowColor="#29000000"
+            android:shadowDx="0"
+            android:shadowDy="10"
+            android:shadowRadius="10"
+            android:text="@{diamond.title}"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/earned_diamonds_fragment_diamondTitleTextSize"
+            app:layout_constraintEnd_toStartOf="@+id/earned_diamonds_recycler_item_icon_diamond"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/earned_diamonds_recycler_item_card"
+            app:layout_constraintTop_toTopOf="@id/earned_diamonds_recycler_item_card" />
+
+        <ImageView
+            android:id="@+id/earned_diamonds_recycler_item_icon_diamond"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/diamond_icon"
+            android:scaleType="fitXY"
+            android:elevation="4dp"
+            app:layout_constraintEnd_toEndOf="@+id/earned_diamonds_recycler_item_card"
+            app:layout_constraintTop_toTopOf="@+id/earned_diamonds_recycler_item_card" />
+
+        <ImageView
+            android:id="@+id/earned_diamonds_recycler_item_icon_date"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/calendar_icon"
+            android:elevation="4dp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="@id/earned_diamonds_recycler_item_card"
+            app:layout_constraintTop_toBottomOf="@+id/earned_diamonds_recycler_item_title" />
+
+        <TextView
+            android:id="@+id/earned_diamonds_recycler_item_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:elevation="4dp"
+            android:fontFamily="@font/montserrat_light"
+            android:shadowColor="#29000000"
+            android:shadowDx="0"
+            android:shadowDy="10"
+            android:shadowRadius="10"
+            android:text="@{diamond.deadline}"
+            android:textColor="@android:color/black"
+            android:textSize="8sp"
+            app:layout_constraintBottom_toBottomOf="@id/earned_diamonds_recycler_item_icon_date"
+            app:layout_constraintStart_toEndOf="@id/earned_diamonds_recycler_item_icon_date"
+            app:layout_constraintTop_toTopOf="@id/earned_diamonds_recycler_item_icon_date" />
+
+        <ImageView
+            android:id="@+id/earned_diamonds_recycler_item_icon_time"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/clock_icon"
+            android:elevation="4dp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="@id/earned_diamonds_recycler_item_card"
+            app:layout_constraintTop_toBottomOf="@+id/earned_diamonds_recycler_item_icon_date" />
+
+        <TextView
+            android:id="@+id/earned_diamonds_recycler_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:elevation="4dp"
+            android:fontFamily="@font/montserrat_light"
+            android:shadowColor="#29000000"
+            android:shadowDx="0"
+            android:shadowDy="10"
+            android:shadowRadius="10"
+            android:text="@{diamond.time}"
+            android:textColor="@android:color/black"
+            android:textSize="8sp"
+            app:layout_constraintBottom_toBottomOf="@id/earned_diamonds_recycler_item_icon_time"
+            app:layout_constraintStart_toEndOf="@id/earned_diamonds_recycler_item_icon_time"
+            app:layout_constraintTop_toTopOf="@id/earned_diamonds_recycler_item_icon_time" />
+
+        <ImageView
+            android:id="@+id/earned_diamonds_recycler_item_icon_difficulty"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/difficulty_icon"
+            android:elevation="4dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="@id/earned_diamonds_recycler_item_card"
+            app:layout_constraintStart_toStartOf="@id/earned_diamonds_recycler_item_card"
+            app:layout_constraintTop_toBottomOf="@+id/earned_diamonds_recycler_item_icon_time"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:id="@+id/ratingBar"
+            style="@style/Widget.MaterialRatingBar.RatingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:layout_marginStart="5dp"
+            android:elevation="4dp"
+            android:isIndicator="true"
+            android:rating="@{diamond.difficulty.ordinal() + 1}"
+            android:stepSize="1"
+            app:layout_constraintBottom_toBottomOf="@+id/earned_diamonds_recycler_item_icon_difficulty"
+            app:layout_constraintStart_toEndOf="@id/earned_diamonds_recycler_item_icon_difficulty"
+            app:layout_constraintTop_toTopOf="@+id/earned_diamonds_recycler_item_icon_difficulty"
+            app:mrb_progressTint="@color/ratingBarActivatedColor" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

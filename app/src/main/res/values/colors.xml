@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <!--Tint colours start-->
+
+    <!--Background tints-->
+    <color name="currentDiamondBackgroundTint">#611B597A</color>
+    <color name="ideasBackgroundTint">#C4191613</color>
+    <color name="earnedDiamondsBackgroundTint">#A3929292</color>
+    <color name="authenticationBackgroundTint">#0FFFFFFF</color>
+    <color name="findTheDiamondBackgroundTint">#611A4100</color>
+    <color name="getDiamondBackgroundTint">#7D12143F</color>
+
+    <!-- Icon tints-->
+
+    <color name="bottomNavigationFocusedTint">#0073BE</color>
+
+    <!--Tint colours end-->
+
+    <!--Text colours-->
+    <color name="quoteTextColor">#E3E5E3</color>
+    <color name="loginLinkTextColor">#26B2FD</color>
+    <color name="authenticationHintTextColor">#70FFFFFF</color>
+    <color name="findTheDiamondHintTextColor">#D3777777</color>
+    <color name="logoTextColor">#0073BE</color>
+
+    <color name="authenticationBackgroundColorGradientStart">#26B2FD</color>
+    <color name="authenticationBackgroundColorGradientEnd">#1A3787</color>
+
+    <color name="authenticationFieldsColor">#70FFFFFF</color>
+    <color name="authenticationButtonColor">#EEF8FF</color>
+    <color name="authenticationButtonColorPressed">#EEF8FF</color>
+    <color name="buttonBordersColor">#80606060</color>
+
+    <color name="logoTint">#43434343</color>
+
+    <color name="progressBarColor">#7DFFFCFC</color>
+
+    <color name="ratingBarNormalColor">#B3B3B3</color>
+    <color name="ratingBarActivatedColor">#FFC107</color>
+</resources>
