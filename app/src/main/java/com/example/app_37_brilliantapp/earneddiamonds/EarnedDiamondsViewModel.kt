@@ -7,6 +7,7 @@ import com.example.app_37_brilliantapp.data.EarnedDiamond
 import com.google.firebase.auth.FirebaseAuth
 import com.example.app_37_brilliantapp.Result
 import com.example.app_37_brilliantapp.data.InvalidEmailException
+import com.example.app_37_brilliantapp.data.NoSuchDocumentException
 import com.example.app_37_brilliantapp.util.SnackbarEvent
 import com.google.android.material.snackbar.Snackbar
 
@@ -38,10 +39,10 @@ class EarnedDiamondsViewModel (private val repository: EarnedDiamondsRepository)
         when(data) {
             is Result.Success -> result.value = data.data
             is Result.Error -> {
-                if (data.exception !is InvalidEmailException)
-                    showSnackbar(SnackbarEvent("Error while loading earned diamonds. Using offline data", Snackbar.LENGTH_LONG))
-                else
+                if (data.exception is InvalidEmailException)
                     showSnackbar(SnackbarEvent("Error while handling email. Check your login data", Snackbar.LENGTH_LONG))
+                else if (data.exception !is NoSuchDocumentException)
+                    showSnackbar(SnackbarEvent("Error while loading diamond. Using offline data", Snackbar.LENGTH_LONG))
             }
         }
         return result

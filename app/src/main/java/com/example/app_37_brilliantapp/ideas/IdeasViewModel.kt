@@ -7,6 +7,7 @@ import com.example.app_37_brilliantapp.Event
 import com.example.app_37_brilliantapp.Result
 import com.example.app_37_brilliantapp.data.Idea
 import com.example.app_37_brilliantapp.data.InvalidEmailException
+import com.example.app_37_brilliantapp.data.NoSuchDocumentException
 import com.example.app_37_brilliantapp.util.SnackbarEvent
 import com.example.app_37_brilliantapp.util.toDateOrToday
 import com.example.app_37_brilliantapp.util.toFormattedString
@@ -48,10 +49,10 @@ class IdeasViewModel (private val repository: IdeasRepository): ViewModel() {
         when(data) {
             is Result.Success -> result.value = data.data
             is Result.Error -> {
-                if (data.exception !is InvalidEmailException)
-                    showSnackbar(SnackbarEvent("Error while loading ideas. Using offline data", Snackbar.LENGTH_LONG))
-                else
+                if (data.exception is InvalidEmailException)
                     showSnackbar(SnackbarEvent("Error while handling email. Check your login data", Snackbar.LENGTH_LONG))
+                else if (data.exception !is NoSuchDocumentException)
+                    showSnackbar(SnackbarEvent("Error while loading diamond. Using offline data", Snackbar.LENGTH_LONG))
             }
         }
         Log.e("HandleResult", "Result: ${result.value}")

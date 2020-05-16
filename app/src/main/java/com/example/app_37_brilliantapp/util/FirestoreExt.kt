@@ -20,7 +20,7 @@ fun FirebaseFirestore.getEarnedDiamondsCollection(email: String): CollectionRefe
     return collection("EarnedDiamonds").document("$email-EarnedDiamondsCollectionHolder").collection("$email-EarnedDiamondsCollection")
 }
 
-fun FirebaseFirestore.getEarnedDiamondsDocumentTitle(email: String, collectionSize: Int): DocumentReference {
+fun FirebaseFirestore.getEarnedDiamondsDocumentTitle(email: String, collectionSize: Long): DocumentReference {
     return getEarnedDiamondsCollection(email).document("$email-EarnedDiamondsCollection-$collectionSize")
 }
 

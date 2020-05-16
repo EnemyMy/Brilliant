@@ -45,7 +45,7 @@ class FirebaseEarnedDiamondsDataSource @Inject constructor(): EarnedDiamondsData
         val email: String = userEmail ?: return
         val countDocument = Firebase.firestore.getEarnedDiamondsCountDocument(email)
         val collectionSize = countDocument.get().await().get("count").let { it?: 0 }
-        val earnedDiamondDocument = Firebase.firestore.getEarnedDiamondsDocumentTitle(email, collectionSize as Int)
+        val earnedDiamondDocument = Firebase.firestore.getEarnedDiamondsDocumentTitle(email, collectionSize as Long)
         try {
             earnedDiamondDocument.set(earnedDiamond).await()
             if (collectionSize == 0) {
