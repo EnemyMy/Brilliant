@@ -5,13 +5,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.app_37_brilliantapp.Event
 import com.example.app_37_brilliantapp.Result
-import com.example.app_37_brilliantapp.application.BrilliantApplication
 import com.example.app_37_brilliantapp.data.Difficulty
 import com.example.app_37_brilliantapp.data.EarnedDiamond
-import com.example.app_37_brilliantapp.data.Repository
 import com.example.app_37_brilliantapp.util.SnackbarEvent
-import com.example.app_37_brilliantapp.util.differenceToCurrentInTime
 import com.example.app_37_brilliantapp.util.differenceToGivenInTime
 import com.example.app_37_brilliantapp.util.toDateOrToday
 import com.google.android.material.snackbar.Snackbar
@@ -19,11 +17,9 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 import kotlin.math.roundToInt
 
-class GetDiamondViewModel (private val repository: Repository): ViewModel() {
+class GetDiamondViewModel (private val repository: GetDiamondRepository): ViewModel() {
 
     private val userEmail = MutableLiveData<String?>().apply {
         FirebaseAuth.getInstance().addAuthStateListener {
@@ -41,8 +37,8 @@ class GetDiamondViewModel (private val repository: Repository): ViewModel() {
     //two way databinding
     val rating = MutableLiveData<Float>()
 
-    private val _diamondSuccessfullySavedEvent = MutableLiveData<Unit>()
-    val diamondSuccessfullySavedEvent: LiveData<Unit> = _diamondSuccessfullySavedEvent
+    private val _diamondSuccessfullySavedEvent = MutableLiveData<Event<Unit>>()
+    val diamondSuccessfullySavedEvent: LiveData<Event<Unit>> = _diamondSuccessfullySavedEvent
 
     fun startGetDiamondEvent() {
         if (userEmail.value != null || userEmail.value != "") {
@@ -74,7 +70,7 @@ class GetDiamondViewModel (private val repository: Repository): ViewModel() {
     }
 
     private fun startDiamondSuccessfullySavedEvent() {
-        _diamondSuccessfullySavedEvent.value = Unit
+        _diamondSuccessfullySavedEvent.value = Event(Unit)
     }
 
     private fun getTime(start: Long): String {

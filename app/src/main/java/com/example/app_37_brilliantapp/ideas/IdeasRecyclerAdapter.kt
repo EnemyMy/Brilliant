@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_37_brilliantapp.data.Idea
 import com.example.app_37_brilliantapp.databinding.IdeasRecyclerItemBinding
+import com.example.app_37_brilliantapp.util.makeAnimationScale
 
 class IdeasRecyclerAdapter(private val viewModel: IdeasViewModel): ListAdapter<Idea, IdeasRecyclerAdapter.RecyclerHolder>(IdeasDiffCallback()) {
 
@@ -33,31 +34,21 @@ class IdeasRecyclerAdapter(private val viewModel: IdeasViewModel): ListAdapter<I
             Log.e("CheckboxClick", "onCheckboxClick")
             if (binding.ideasRecyclerItemCheckboxDone.visibility == View.INVISIBLE) {
                 binding.ideasRecyclerItemCheckboxDone.visibility = View.VISIBLE
-                binding.ideasRecyclerItemCheckboxDone.animate()
-                    .setDuration(300)
-                    .scaleX(1F)
-                    .scaleY(1F)
-                    .setInterpolator(OvershootInterpolator())
-                        .withEndAction {
-                            val currentIdea = currentList[layoutPosition].apply { done = true }
-                            binding.idea = currentIdea
-                            viewModel.changeIdeaState(currentIdea)
-                        }
-                    .start()
+                val action = Runnable {
+                    val currentIdea = currentList[layoutPosition].apply { done = true }
+                    binding.idea = currentIdea
+                    viewModel.changeIdeaState(currentIdea)
+                }
+                animateCheckboxDoneAppear(action)
                 binding.ideasRecyclerItemText.startStrikeThroughAnimationForward()
             } else {
-                binding.ideasRecyclerItemCheckboxDone.animate()
-                    .setDuration(300)
-                    .scaleX(0.01F)
-                    .scaleY(0.01F)
-                    .setInterpolator(AnticipateInterpolator())
-                    .withEndAction {
-                        val currentIdea = currentList[layoutPosition].apply { done = false }
-                        binding.idea = currentIdea
-                        viewModel.changeIdeaState(currentIdea)
-                        binding.ideasRecyclerItemCheckboxDone.visibility = View.INVISIBLE
-                    }
-                    .start()
+                val action = Runnable {
+                    val currentIdea = currentList[layoutPosition].apply { done = false }
+                    binding.idea = currentIdea
+                    viewModel.changeIdeaState(currentIdea)
+                    binding.ideasRecyclerItemCheckboxDone.visibility = View.INVISIBLE
+                }
+                animateCheckboxDoneDisappear(action)
                 binding.ideasRecyclerItemText.startStrikeThroughAnimationBackward()
             }
 
@@ -66,20 +57,12 @@ class IdeasRecyclerAdapter(private val viewModel: IdeasViewModel): ListAdapter<I
         fun onCheckboxLongClick(view: View?): Boolean {
             if (binding.ideasRecyclerItemCheckboxDelete.visibility == View.INVISIBLE) {
                 binding.ideasRecyclerItemCheckboxDelete.visibility = View.VISIBLE
-                binding.ideasRecyclerItemCheckboxDelete.animate()
-                    .setDuration(300)
-                    .scaleX(1F)
-                    .scaleY(1F)
-                    .setInterpolator(OvershootInterpolator())
-                    .start()
+                animateCheckboxDeleteAppear()
             } else {
-                binding.ideasRecyclerItemCheckboxDelete.animate()
-                    .setDuration(300)
-                    .scaleX(0.01F)
-                    .scaleY(0.01F)
-                    .setInterpolator(AnticipateInterpolator())
-                    .withEndAction { binding.ideasRecyclerItemCheckboxDelete.visibility = View.INVISIBLE }
-                    .start()
+                val action = Runnable {
+                    binding.ideasRecyclerItemCheckboxDelete.visibility = View.INVISIBLE
+                }
+                animateCheckboxDeleteDisappear(action)
             }
             return true
         }
@@ -89,6 +72,22 @@ class IdeasRecyclerAdapter(private val viewModel: IdeasViewModel): ListAdapter<I
             binding.ideasRecyclerItemCheckboxDelete.visibility = View.INVISIBLE
             binding.ideasRecyclerItemText.setTextCommon()
             viewModel.deleteIdea(currentIdea)
+        }
+
+        private fun animateCheckboxDoneAppear(action: Runnable) {
+            binding.ideasRecyclerItemCheckboxDone.makeAnimationScale(300, 1.0, 1.0, OvershootInterpolator(), action)
+        }
+
+        private fun animateCheckboxDoneDisappear(action: Runnable) {
+            binding.ideasRecyclerItemCheckboxDone.makeAnimationScale(300, 0.01, 0.01, AnticipateInterpolator(), action)
+        }
+
+        private fun animateCheckboxDeleteAppear() {
+            binding.ideasRecyclerItemCheckboxDelete.makeAnimationScale(300, 1.0, 1.0, OvershootInterpolator())
+        }
+
+        private fun animateCheckboxDeleteDisappear(action: Runnable) {
+            binding.ideasRecyclerItemCheckboxDelete.makeAnimationScale(300, 0.01, 0.01, AnticipateInterpolator(), action)
         }
     }
 

@@ -12,13 +12,14 @@ import android.view.animation.OvershootInterpolator
 import androidx.activity.OnBackPressedCallback
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.app_37_brilliantapp.BaseViewModelFactory
+import com.example.app_37_brilliantapp.EventObserver
 import com.example.app_37_brilliantapp.custom.FontSpan
 import com.example.app_37_brilliantapp.R
 import com.example.app_37_brilliantapp.StateViewModelFactory
 import com.example.app_37_brilliantapp.databinding.FragmentFindTheDiamondBinding
+import com.example.app_37_brilliantapp.util.makeAnimationScale
 import com.example.app_37_brilliantapp.util.setupSnackbar
 import javax.inject.Inject
 import javax.inject.Named
@@ -30,15 +31,10 @@ class FindTheDiamondFragment @Inject constructor(@Named("FindTheDiamondViewModel
     private val backCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             if (binding.fragmentFindTheDiamondInfoCard.visibility == View.VISIBLE) {
-                binding.fragmentFindTheDiamondInfoCard.animate()
-                    .setDuration(500)
-                    .scaleX(0.01F)
-                    .scaleY(0.01F)
-                    .setInterpolator(AnticipateInterpolator())
-                    .withEndAction {
-                        binding.fragmentFindTheDiamondInfoCard.visibility = View.GONE
-                    }
-                    .start()
+                val action = Runnable {
+                    binding.fragmentFindTheDiamondInfoCard.visibility = View.GONE
+                }
+                animateInfoCardClose(action)
             }
             else
                 requireActivity().supportFragmentManager.popBackStack()
@@ -100,22 +96,25 @@ class FindTheDiamondFragment @Inject constructor(@Named("FindTheDiamondViewModel
     }
 
     private fun setupNavigation() {
-        viewModel.saveDiamondEvent.observe(this, Observer {
+        viewModel.saveDiamondEvent.observe(this, EventObserver {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         })
     }
 
     fun onInfoButtonClick() {
         binding.fragmentFindTheDiamondInfoCard.visibility = View.VISIBLE
-        binding.fragmentFindTheDiamondInfoCard.animate()
-            .setDuration(500)
-            .scaleX(1F)
-            .scaleY(1F)
-            .setInterpolator(OvershootInterpolator())
-            .start()
+        animateInfoCardOpen()
     }
 
     fun onBackButtonClick() {
         requireActivity().onBackPressedDispatcher.onBackPressed()
+    }
+
+    private fun animateInfoCardClose(action: Runnable) {
+        binding.fragmentFindTheDiamondInfoCard.makeAnimationScale(500, 0.01, 0.01, AnticipateInterpolator(), action)
+    }
+
+    private fun animateInfoCardOpen() {
+        binding.fragmentFindTheDiamondInfoCard.makeAnimationScale(500, 1.0, 1.0, OvershootInterpolator())
     }
 }

@@ -15,12 +15,11 @@ import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.app_37_brilliantapp.BaseViewModelFactory
+import com.example.app_37_brilliantapp.EventObserver
 import com.example.app_37_brilliantapp.R
 import com.example.app_37_brilliantapp.StateViewModelFactory
-import com.example.app_37_brilliantapp.application.BrilliantApplication
 import com.example.app_37_brilliantapp.databinding.FragmentSignupBinding
 import com.example.app_37_brilliantapp.login.LoginFragment
 import com.example.app_37_brilliantapp.main.MainActivity
@@ -31,8 +30,6 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.google.android.gms.auth.api.signin.*
 import com.google.android.gms.common.api.ApiException
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 
@@ -129,16 +126,20 @@ class SignupFragment @Inject constructor(@Named("SignupViewModelFactory") privat
     }
 
     private fun setupNavigation() {
-        viewModel.loginEvent.observe(this, Observer{ navigateToLogin() })
-        viewModel.mainMenuEvent.observe(this, Observer { navigateToMainMenu() })
+        viewModel.loginEvent.observe(this, EventObserver {
+            navigateToLogin()
+        })
+        viewModel.mainMenuEvent.observe(this, EventObserver {
+            navigateToMainMenu()
+        })
     }
 
     private fun navigateToLogin() {
-        parentActivity.navigateToFragment(LoginFragment::class.java, R.id.main_activity_fragment_container, true, "login_fragment_tag")
+        parentActivity.supportFragmentManager.navigateToFragment(LoginFragment::class.java, R.id.main_activity_fragment_container, true, "login_fragment_tag")
     }
 
     private fun navigateToMainMenu() {
-        parentActivity.navigateToFragment(MainMenuFragment::class.java, R.id.main_activity_fragment_container, true)
+        parentActivity.supportFragmentManager.navigateToFragment(MainMenuFragment::class.java, R.id.main_activity_fragment_container, true)
     }
 
     fun onGoogleButtonClick(view: View) {
@@ -155,22 +156,11 @@ class SignupFragment @Inject constructor(@Named("SignupViewModelFactory") privat
 
     }
 
-    private fun animateImageButton(view: View, afterAnimationEndsCallback: Runnable) {
-        view.animate()
-            .setDuration(200)
-            .scaleXBy(0.3F)
-            .scaleYBy(0.3F)
-            .setInterpolator(AccelerateInterpolator())
-            .withEndAction {
-                view.animate()
-                    .setDuration(200)
-                    .scaleXBy(-0.3F)
-                    .scaleYBy(-0.3F)
-                    .setInterpolator(DecelerateInterpolator())
-                    .withEndAction(afterAnimationEndsCallback)
-                    .start()
-            }
-            .start()
+    private fun animateImageButton(view: View, action: Runnable) {
+        val onEndAction = Runnable {
+            view.makeAnimationScaleBy(200, -0.3, -0.3, DecelerateInterpolator(), action)
+        }
+        view.makeAnimationScaleBy(200, 0.3, 0.3, AccelerateInterpolator(), onEndAction)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -181,7 +171,9 @@ class SignupFragment @Inject constructor(@Named("SignupViewModelFactory") privat
                 val task = GoogleSignIn.getSignedInAccountFromIntent(data)
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
-                viewModel.firebaseAuthWithGoogle(account!!)
+                account?.let {
+                    viewModel.firebaseAuthWithGoogle(account)
+                }
             } catch (e: ApiException) {
                 Log.e("FirebaseAuth", "Google sign in failed", e)
                 viewModel.showSnackbar(SnackbarEvent("Google sign in failed"))

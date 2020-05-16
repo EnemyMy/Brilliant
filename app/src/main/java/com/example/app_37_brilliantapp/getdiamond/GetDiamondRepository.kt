@@ -1,13 +1,12 @@
-package com.example.app_37_brilliantapp.data
+package com.example.app_37_brilliantapp.getdiamond
 
 import androidx.lifecycle.LiveData
 import com.example.app_37_brilliantapp.Result
+import com.example.app_37_brilliantapp.data.CurrentDiamond
+import com.example.app_37_brilliantapp.data.EarnedDiamond
 
-interface Repository {
-
+interface GetDiamondRepository {
     fun observeCurrentDiamond(): LiveData<Result<CurrentDiamond>>
-
-    fun observeIdeas(): LiveData<Result<List<Idea>>>
 
     fun observeEarnedDiamonds(): LiveData<Result<List<EarnedDiamond>>>
 
@@ -20,12 +19,4 @@ interface Repository {
     suspend fun addEarnedDiamond(earnedDiamond: EarnedDiamond)
 
     suspend fun getEarnedDiamonds(): Result<List<EarnedDiamond>>
-
-    suspend fun addOrChangeIdea(idea: Idea)
-
-    suspend fun deleteIdea(idea: Idea)
-
-    suspend fun getIdeas(): Result<List<Idea>>
-
-    suspend fun clearIdeas()
 }

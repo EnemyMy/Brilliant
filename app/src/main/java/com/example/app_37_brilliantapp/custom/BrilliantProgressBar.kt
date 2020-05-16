@@ -35,6 +35,9 @@ class BrilliantProgressBar @JvmOverloads constructor(context: Context, attrs: At
 
     override fun onDraw(canvas: Canvas?) {
 
+        if (canvas == null)
+            return
+
         //draw progress line
         paint.color = resources.getColor(R.color.progressBarColor)
         paint.isAntiAlias = true
@@ -44,7 +47,7 @@ class BrilliantProgressBar @JvmOverloads constructor(context: Context, attrs: At
         paint.strokeCap = Paint.Cap.ROUND
         oval.set(0F,0F, measuredWidth.toFloat(), measuredHeight.toFloat())
         oval.inset(paint.strokeWidth / 2, paint.strokeWidth / 2)
-        canvas!!.drawArc(oval, 135F, progress * ((360 * 0.75F) / 100), false, paint)
+        canvas.drawArc(oval, 135F, progress * ((360 * 0.75F) / 100), false, paint)
 
         //draw first percent digit
         if (progress == 100) {

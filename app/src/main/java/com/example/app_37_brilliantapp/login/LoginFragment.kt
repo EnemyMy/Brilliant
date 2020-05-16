@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.app_37_brilliantapp.BaseViewModelFactory
+import com.example.app_37_brilliantapp.EventObserver
 import com.example.app_37_brilliantapp.main.MainActivity
 import com.example.app_37_brilliantapp.main.MainMenuFragment
 import com.example.app_37_brilliantapp.R
@@ -45,8 +46,8 @@ class LoginFragment @Inject constructor(@Named("LoginViewModelFactory") private 
     }
 
     private fun setupNavigation() {
-        viewModel.mainMenuEvent.observe(this, Observer {
-            parentActivity.navigateToFragment(MainMenuFragment::class.java, R.id.main_activity_fragment_container, true)
+        viewModel.mainMenuEvent.observe(this, EventObserver {
+            parentActivity.supportFragmentManager.navigateToFragment(MainMenuFragment::class.java, R.id.main_activity_fragment_container, true)
         })
     }
 }

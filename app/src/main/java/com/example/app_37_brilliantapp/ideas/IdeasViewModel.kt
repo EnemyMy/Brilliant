@@ -4,11 +4,9 @@ import android.text.format.DateUtils
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.app_37_brilliantapp.Result
-import com.example.app_37_brilliantapp.application.BrilliantApplication
 import com.example.app_37_brilliantapp.data.Idea
-import com.example.app_37_brilliantapp.data.Repository
+import com.example.app_37_brilliantapp.data.InvalidEmailException
 import com.example.app_37_brilliantapp.util.SnackbarEvent
-import com.example.app_37_brilliantapp.util.toCalendar
 import com.example.app_37_brilliantapp.util.toDateOrToday
 import com.example.app_37_brilliantapp.util.toFormattedString
 import com.google.android.material.snackbar.Snackbar
@@ -16,9 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import javax.inject.Inject
 
-class IdeasViewModel (private val repository: Repository): ViewModel() {
+class IdeasViewModel (private val repository: IdeasRepository): ViewModel() {
 
     private val userEmail = MutableLiveData<String?>().apply {
         FirebaseAuth.getInstance().addAuthStateListener {
@@ -35,7 +32,7 @@ class IdeasViewModel (private val repository: Repository): ViewModel() {
     }
 
     private val _noIdeas: MutableLiveData<Boolean> = ideas.map {
-        ideas.value == null || ideas.value!!.isEmpty()
+        ideas.value?.isEmpty() ?: true
     } as MutableLiveData<Boolean>
     val noIdeas: LiveData<Boolean> = _noIdeas
 
@@ -50,8 +47,10 @@ class IdeasViewModel (private val repository: Repository): ViewModel() {
         when(data) {
             is Result.Success -> result.value = data.data
             is Result.Error -> {
-                if (!data.noSuchDocument)
+                if (data.exception !is InvalidEmailException)
                     showSnackbar(SnackbarEvent("Error while loading ideas. Using offline data", Snackbar.LENGTH_LONG))
+                else
+                    showSnackbar(SnackbarEvent("Error while handling email. Check your login data", Snackbar.LENGTH_LONG))
             }
         }
         Log.e("HandleResult", "Result: ${result.value}")
@@ -59,17 +58,19 @@ class IdeasViewModel (private val repository: Repository): ViewModel() {
     }
 
     fun createIdea(): Boolean {
-        if (newIdeaName.value == null || newIdeaName.value == "") {
+        val name = newIdeaName.value ?: ""
+        if (validateName(name)) {
             showSnackbar(SnackbarEvent("Please enter correct idea"))
             return false
         }
-        val list = ideas.value
-        if (ideas.value != null && list!!.any { idea -> idea.title == newIdeaName.value }) {
-            showSnackbar(SnackbarEvent("You already have this idea"))
-            return false
+        ideas.value?.let { list ->
+            if (list.any { idea -> idea.title == name }) {
+                showSnackbar(SnackbarEvent("You already have this idea"))
+                return false
+            }
         }
         viewModelScope.launch(Dispatchers.IO) {
-            repository.addOrChangeIdea(Idea(newIdeaName.value!!, createTime = Calendar.getInstance().toFormattedString()))
+            repository.addOrChangeIdea(Idea(name, createTime = Calendar.getInstance().toFormattedString()))
         }
         return true
     }
@@ -81,9 +82,10 @@ class IdeasViewModel (private val repository: Repository): ViewModel() {
     }
 
     fun clearOldIdeas(): Boolean {
-        if (ideas.value != null && ideas.value!!.isNotEmpty()) {
+        val ideas = ideas.value
+        if (ideas?.isNotEmpty() == true) {
             //checking if first idea was made yesterday. No need to check all ideas
-            val firstIdea = ideas.value!!.toMutableList()[0]
+            val firstIdea = ideas.toMutableList()[0]
             val wasMadeToday = DateUtils.isToday(firstIdea.createTime.toDateOrToday().time)
             if (!wasMadeToday) {
                 viewModelScope.launch(Dispatchers.IO) { repository.clearIdeas() }
@@ -102,5 +104,7 @@ class IdeasViewModel (private val repository: Repository): ViewModel() {
     fun showSnackbar(event: SnackbarEvent) {
         _snackBarEvent.value = event
     }
+
+    fun validateName(name: String): Boolean = name != ""
 
 }

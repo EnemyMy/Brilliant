@@ -29,10 +29,10 @@ class MainMenuFragment @Inject constructor(): Fragment(), BottomNavigationView.O
                 binding.bottomNavigation.selectedItemId =
                     R.id.currentDiamondFragment
             else {
-                if (activity!!.supportFragmentManager.backStackEntryCount > 0)
-                    activity!!.supportFragmentManager.popBackStack()
+                if (requireActivity().supportFragmentManager.backStackEntryCount > 0)
+                    requireActivity().supportFragmentManager.popBackStack()
                 else
-                    activity!!.finish()
+                    requireActivity().finish()
             }
         }
     }
@@ -51,7 +51,7 @@ class MainMenuFragment @Inject constructor(): Fragment(), BottomNavigationView.O
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navigateToFragment(CurrentDiamondFragment::class.java, R.id.main_menu_fragment_container, false)
+        childFragmentManager.navigateToFragment(CurrentDiamondFragment::class.java, R.id.main_menu_fragment_container, false)
         binding.bottomNavigation.setOnNavigationItemSelectedListener(this)
     }
 
@@ -63,7 +63,7 @@ class MainMenuFragment @Inject constructor(): Fragment(), BottomNavigationView.O
             R.id.ideasFragment -> selectedFragment = IdeasFragment::class.java
             R.id.earnedDiamondsFragment -> selectedFragment = EarnedDiamondsFragment::class.java
         }
-        navigateToFragment(selectedFragment, R.id.main_menu_fragment_container, true)
+        childFragmentManager.navigateToFragment(selectedFragment, R.id.main_menu_fragment_container, true)
         return true
     }
 }

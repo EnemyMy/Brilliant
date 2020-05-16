@@ -1,6 +1,5 @@
 package com.example.app_37_brilliantapp
 
-import com.example.app_37_brilliantapp.data.NoSuchDocumentException
 import java.lang.Exception
 
 sealed class Result<out R> {
@@ -9,6 +8,4 @@ sealed class Result<out R> {
 
     val succeeded
         get() = this is Success && data != null
-    val noSuchDocument
-        get() = this is Error && exception is NoSuchDocumentException
 }

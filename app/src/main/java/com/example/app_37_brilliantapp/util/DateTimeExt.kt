@@ -22,19 +22,6 @@ enum class Time {
 
 private val df = SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US)
 
-fun FragmentTransaction.addSlideAnimation(): FragmentTransaction {
-    this.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
-    return this
-}
-
-fun String.isValidEmail() =
-    this.isNotEmpty() && android.util.Patterns.EMAIL_ADDRESS.matcher(this).matches()
-
-fun String.isValidPassword() = this.isNotEmpty() && this.length >= 8 && this.contains(Regex("\\d"))
-
-fun String.isValidName() = this.isNotEmpty()
-
-
 fun EditText.showDateTimePickerDialog() {
     val calendarFromEditText = text.toString().toCalendar()
     val startYear = calendarFromEditText.get(Calendar.YEAR)
@@ -77,25 +64,7 @@ fun String.toDateOrToday(): Date = try {
 
 fun Long.differenceToCurrentInTime(): String {
     val currentTime = Date().time
-    if (this < currentTime)
-        return ""
-
-    val remainingTime = this - currentTime
-    val days = TimeUnit.MILLISECONDS.toDays(remainingTime)
-    val remainingHoursInMillis = remainingTime - TimeUnit.DAYS.toMillis(days)
-    val hours = TimeUnit.MILLISECONDS.toHours(remainingHoursInMillis)
-    val remainingMinutesInMillis =
-            remainingHoursInMillis - TimeUnit.HOURS.toMillis(hours)
-    val minutes = TimeUnit.MILLISECONDS.toMinutes(remainingMinutesInMillis)
-    val remainingSecondsInMillis =
-            remainingMinutesInMillis - TimeUnit.MINUTES.toMillis(minutes)
-    val seconds = TimeUnit.MILLISECONDS.toSeconds(remainingSecondsInMillis)
-    return when {
-        days > 0 -> getTimeStringOrEmpty(days, Time.DAYS) + getTimeStringOrEmpty(hours, Time.HOURS)
-        hours > 0 -> getTimeStringOrEmpty(hours, Time.HOURS) + getTimeStringOrEmpty(minutes, Time.MINUTES)
-        minutes > 0 -> getTimeStringOrEmpty(minutes, Time.MINUTES) + getTimeStringOrEmpty(seconds, Time.SECONDS)
-        else -> getTimeStringOrEmpty(seconds, Time.SECONDS)
-    }
+    return differenceToGivenInTime(currentTime)
 }
 
 fun Long.differenceToGivenInTime(given: Long): String {

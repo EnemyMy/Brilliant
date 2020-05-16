@@ -2,28 +2,21 @@ package com.example.app_37_brilliantapp.currentdiamond
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.app_37_brilliantapp.Event
 import com.example.app_37_brilliantapp.Result
-import com.example.app_37_brilliantapp.application.BrilliantApplication
 import com.example.app_37_brilliantapp.data.CurrentDiamond
-import com.example.app_37_brilliantapp.data.Repository
+import com.example.app_37_brilliantapp.data.InvalidEmailException
 import com.example.app_37_brilliantapp.util.SnackbarEvent
-import com.example.app_37_brilliantapp.util.toDateOrToday
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.squareup.okhttp.Dispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import java.util.*
-import java.util.concurrent.Executors
-import javax.inject.Inject
-import kotlin.math.roundToInt
 
-class CurrentDiamondViewModel (private val repository: Repository): ViewModel() {
+class CurrentDiamondViewModel (private val repository: CurrentDiamondRepository): ViewModel() {
 
     private val auth by lazy { FirebaseAuth.getInstance() }
 
+    //TODO("Replace with liveData{}")
     private val userEmail = MutableLiveData<String?>().apply {
         FirebaseAuth.getInstance().addAuthStateListener {
             Log.e("FirebaseAuth", "AuthStateChanged: currentUser: ${it.currentUser}")
@@ -31,17 +24,17 @@ class CurrentDiamondViewModel (private val repository: Repository): ViewModel() 
         }
     }
 
-    private val _logoutEvent = MutableLiveData<Unit>()
-    val logoutEvent: LiveData<Unit> = _logoutEvent
+    private val _logoutEvent = MutableLiveData<Event<Unit>>()
+    val logoutEvent: LiveData<Event<Unit>> = _logoutEvent
 
-    private val _findTheDiamondEvent = MutableLiveData<Unit>()
-    val findTheDiamondEvent: LiveData<Unit> = _findTheDiamondEvent
+    private val _findTheDiamondEvent = MutableLiveData<Event<Unit>>()
+    val findTheDiamondEvent: LiveData<Event<Unit>> = _findTheDiamondEvent
 
-    private val _getDiamondEvent = MutableLiveData<Unit>()
-    val getDiamondEvent: LiveData<Unit> = _getDiamondEvent
+    private val _getDiamondEvent = MutableLiveData<Event<Unit>>()
+    val getDiamondEvent: LiveData<Event<Unit>> = _getDiamondEvent
 
-    private val _cancelDiamondEvent = MutableLiveData<Unit>()
-    val cancelDiamondEvent: LiveData<Unit> = _cancelDiamondEvent
+    private val _cancelDiamondEvent = MutableLiveData<Event<Unit>>()
+    val cancelDiamondEvent: LiveData<Event<Unit>> = _cancelDiamondEvent
 
     val currentDiamond: LiveData<CurrentDiamond> = userEmail.switchMap {email ->
         Log.e("MLD currentDiamond", "Start observing")
@@ -58,7 +51,7 @@ class CurrentDiamondViewModel (private val repository: Repository): ViewModel() 
     val diamondName: LiveData<String> = noDiamond.map {state ->
         if (!state) {
             Log.e("LD diamondName", "Value: ${currentDiamond.value?.title}")
-            currentDiamond.value!!.title
+            currentDiamond.value?.title ?: ""
         }
         else {
             Log.e("LD diamondName", "Value: ${""}")
@@ -74,8 +67,10 @@ class CurrentDiamondViewModel (private val repository: Repository): ViewModel() 
         when(data) {
             is Result.Success -> result.value = data.data
             is Result.Error -> {
-                if (!data.noSuchDocument)
+                if (data.exception !is InvalidEmailException)
                     showSnackbar(SnackbarEvent("Error while loading diamond. Using offline data", Snackbar.LENGTH_LONG))
+                else
+                    showSnackbar(SnackbarEvent("Error while handling email. Check your login data", Snackbar.LENGTH_LONG))
             }
         }
         Log.e("MLD currentDiamond", "End handling result. Result: ${result.value}")
@@ -85,24 +80,24 @@ class CurrentDiamondViewModel (private val repository: Repository): ViewModel() 
     fun startLogoutEvent() {
         Log.e("FirebaseAuth", "Start logout. Current user: ${auth.currentUser}")
         auth.signOut()
-        _logoutEvent.value = Unit
+        _logoutEvent.value = Event(Unit)
         Log.e("FirebaseAuth", "End logout. Current user: ${auth.currentUser}")
     }
 
     fun startFindTheDiamondEvent() {
-        _findTheDiamondEvent.value = Unit
+        _findTheDiamondEvent.value = Event(Unit)
     }
 
     fun startGetDiamondEvent() {
-        _cancelDiamondEvent.value = Unit
-        _getDiamondEvent.value = Unit
+        _cancelDiamondEvent.value = Event(Unit)
+        _getDiamondEvent.value = Event(Unit)
     }
 
     fun startCancelDiamondEvent() {
         showSnackbar(SnackbarEvent("Do you want to cancel?", actionText = "Continue") {
             viewModelScope.launch(Dispatchers.Main) {
                 repository.deleteCurrentDiamond()
-                _cancelDiamondEvent.value = Unit
+                _cancelDiamondEvent.value = Event(Unit)
             }
         })
     }

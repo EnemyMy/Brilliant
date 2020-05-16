@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.app_37_brilliantapp.BaseViewModelFactory
+import com.example.app_37_brilliantapp.EventObserver
 import com.example.app_37_brilliantapp.StateViewModelFactory
 import com.example.app_37_brilliantapp.databinding.FragmentGetDiamondBinding
 import com.example.app_37_brilliantapp.util.setupSnackbar
@@ -36,7 +37,7 @@ class GetDiamondFragment @Inject constructor(@Named("GetDiamondViewModelFactory"
     }
 
     private fun setupNavigation() {
-        viewModel.diamondSuccessfullySavedEvent.observe(this, Observer {
+        viewModel.diamondSuccessfullySavedEvent.observe(this, EventObserver {
             onBackButtonClick()
         })
     }

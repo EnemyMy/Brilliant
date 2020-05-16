@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.app_37_brilliantapp.BaseViewModelFactory
+import com.example.app_37_brilliantapp.EventObserver
 import com.example.app_37_brilliantapp.custom.BrilliantProgressBarUpdater
 import com.example.app_37_brilliantapp.R
 import com.example.app_37_brilliantapp.StateViewModelFactory
@@ -57,19 +58,27 @@ class CurrentDiamondFragment @Inject constructor(@Named("CurrentDiamondViewModel
     }
 
     private fun setupNavigation() {
-        viewModel.logoutEvent.observe(this, Observer {
+        viewModel.logoutEvent.observe(this, EventObserver {
             //Clear backstack first
             if (parentActivity.supportFragmentManager.backStackEntryCount > 0) {
                 val entry: FragmentManager.BackStackEntry = parentActivity.supportFragmentManager.getBackStackEntryAt(0)
-                parentActivity.supportFragmentManager.popBackStack(entry.id, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                parentActivity
+                    .supportFragmentManager
+                    .popBackStack(entry.id, FragmentManager.POP_BACK_STACK_INCLUSIVE)
             }
-            parentActivity.navigateToFragment(SignupFragment::class.java, R.id.main_activity_fragment_container, true)
+            parentActivity
+                .supportFragmentManager
+                .navigateToFragment(SignupFragment::class.java, R.id.main_activity_fragment_container, true)
         })
-        viewModel.findTheDiamondEvent.observe(this, Observer {
-            parentActivity.navigateToFragment(FindTheDiamondFragment::class.java, R.id.main_activity_fragment_container, true, null)
+        viewModel.findTheDiamondEvent.observe(this, EventObserver {
+            parentActivity
+                .supportFragmentManager
+                .navigateToFragment(FindTheDiamondFragment::class.java, R.id.main_activity_fragment_container, true, null)
         })
-        viewModel.getDiamondEvent.observe(this, Observer {
-            parentActivity.navigateToFragment(GetDiamondFragment::class.java, R.id.main_activity_fragment_container, true, null)
+        viewModel.getDiamondEvent.observe(this, EventObserver {
+            parentActivity
+                .supportFragmentManager
+                .navigateToFragment(GetDiamondFragment::class.java, R.id.main_activity_fragment_container, true, null)
         })
     }
 

@@ -4,12 +4,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.app_37_brilliantapp.application.BrilliantApplication
-import com.example.app_37_brilliantapp.data.Repository
+import com.example.app_37_brilliantapp.Event
 import com.example.app_37_brilliantapp.util.SnackbarEvent
-import com.example.app_37_brilliantapp.util.isValidEmail
-import com.example.app_37_brilliantapp.util.isValidName
-import com.example.app_37_brilliantapp.util.isValidPassword
 import com.facebook.AccessToken
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.firebase.auth.FacebookAuthProvider
@@ -17,17 +13,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.UserProfileChangeRequest
 
-class SignupViewModel (private val repository: Repository): ViewModel() {
+class SignupViewModel: ViewModel() {
 
     private val auth by lazy { FirebaseAuth.getInstance() }
     val isUserLoggedIn: Boolean
         get() = auth.currentUser != null
 
-    private val _loginEvent = MutableLiveData<Unit>()
-    val loginEvent: LiveData<Unit> = _loginEvent
+    private val _loginEvent = MutableLiveData<Event<Unit>>()
+    val loginEvent: LiveData<Event<Unit>> = _loginEvent
 
-    private val _mainMenuEvent = MutableLiveData<Unit>()
-    val mainMenuEvent: LiveData<Unit> = _mainMenuEvent
+    private val _mainMenuEvent = MutableLiveData<Event<Unit>>()
+    val mainMenuEvent: LiveData<Event<Unit>> = _mainMenuEvent
 
     private val _snackBarEvent = MutableLiveData<SnackbarEvent>()
     val snackBarEvent: LiveData<SnackbarEvent> = _snackBarEvent
@@ -42,20 +38,23 @@ class SignupViewModel (private val repository: Repository): ViewModel() {
     val name = MutableLiveData<String>()
 
     fun startLoginEvent() {
-        _loginEvent.value = Unit
+        _loginEvent.value = Event(Unit)
     }
 
     fun startSignupEvent() {
         Log.e("FirebaseAuth", "Start signup. Current user: ${auth.currentUser}. Email: ${email.value} Password: ${password.value}")
-        if (validateFields()) {
-            auth.createUserWithEmailAndPassword(email.value!!, password.value!!)
+        val email = email.value ?: ""
+        val password = password.value ?: ""
+        val name = name.value ?: ""
+        if (validateFields(email, password, name)) {
+            auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.e(
                             "FirebaseAuth",
                             "Signup successful. Current user: ${auth.currentUser} UserName: ${auth.currentUser?.displayName}"
                         )
-                        auth.currentUser!!.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name.value).build())
+                        auth.currentUser?.updateProfile(UserProfileChangeRequest.Builder().setDisplayName(name).build())
                         startMainMenuEvent()
                     } else {
                         Log.e(
@@ -72,21 +71,24 @@ class SignupViewModel (private val repository: Repository): ViewModel() {
 
     fun startMainMenuEvent() {
         Log.e("FirebaseAuth", "User logged in. Current user: ${auth.currentUser}")
-        _mainMenuEvent.value = Unit
+        _mainMenuEvent.value = Event(Unit)
     }
 
     fun showSnackbar(event: SnackbarEvent) {
         _snackBarEvent.value = event
     }
 
-    private fun validateFields(): Boolean {
-        if (email.value != null && password.value != null && name.value != null)
-            return email.value!!.isValidEmail() && password.value!!.isValidPassword() && name.value!!.isValidName()
-        return false
+    private fun validateFields(email: String, password: String, name: String): Boolean {
+        return email.isNotEmpty()
+                && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                && password.isNotEmpty()
+                && password.length >= 8
+                && password.contains(Regex("\\d"))
+                && name.isNotEmpty()
     }
 
     fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.d("FirebaseAuth", "firebaseAuthWithGoogle:" + acct.id!!)
+        Log.d("FirebaseAuth", "firebaseAuthWithGoogle:" + acct.id)
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener { task ->
             if (task.isSuccessful) {

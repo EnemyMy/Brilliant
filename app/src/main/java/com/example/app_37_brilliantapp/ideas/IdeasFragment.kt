@@ -16,8 +16,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.app_37_brilliantapp.BaseViewModelFactory
 import com.example.app_37_brilliantapp.StateViewModelFactory
-import com.example.app_37_brilliantapp.data.Idea
 import com.example.app_37_brilliantapp.databinding.FragmentIdeasBinding
+import com.example.app_37_brilliantapp.util.makeAnimationScale
+import com.example.app_37_brilliantapp.util.makeAnimationScaleBy
 import com.example.app_37_brilliantapp.util.setupSnackbar
 import javax.inject.Inject
 import javax.inject.Named
@@ -28,17 +29,13 @@ class IdeasFragment @Inject constructor(@Named("IdeasViewModelFactory") private 
     private val viewModel by viewModels<IdeasViewModel> { StateViewModelFactory(factory, this) }
     private val backCallback = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
-            if (binding.ideasFragmentAddIdeaCard.visibility == View.VISIBLE)
-                binding.ideasFragmentAddIdeaCard.animate()
-                    .setDuration(500)
-                    .scaleX(0.01F)
-                    .scaleY(0.01F)
-                    .setInterpolator(AnticipateInterpolator())
-                    .withEndAction {
-                        binding.ideasFragmentAddIdeaCard.visibility = View.GONE
-                        isEnabled = false
-                    }
-                    .start()
+            if (binding.ideasFragmentAddIdeaCard.visibility == View.VISIBLE) {
+                val action = Runnable {
+                    binding.ideasFragmentAddIdeaCard.visibility = View.GONE
+                    isEnabled = false
+                }
+                animateAddIdeaCardClose(action)
+            }
             else
                 requireActivity().onBackPressedDispatcher.onBackPressed()
         }
@@ -72,40 +69,19 @@ class IdeasFragment @Inject constructor(@Named("IdeasViewModelFactory") private 
 
     fun onCreateIdeaButtonCLick() {
         binding.ideasFragmentAddIdeaCard.visibility = View.VISIBLE
-        binding.ideasFragmentAddIdeaCard.animate()
-            .setDuration(500)
-            .scaleX(1F)
-            .scaleY(1F)
-            .setInterpolator(OvershootInterpolator())
-            .start()
+        animateAddIdeaCardOpen()
         backCallback.isEnabled = true
     }
 
     fun onCreateIdeaCardButtonCLick() {
         if (viewModel.createIdea()) {
-            binding.ideasFragmentAddIdeaCardButton.animate()
-                    .setDuration(200)
-                    .scaleXBy(0.3F)
-                    .scaleYBy(0.3F)
-                    .setInterpolator(AccelerateInterpolator())
-                    .withEndAction {
-                        binding.ideasFragmentAddIdeaCardButton.animate()
-                                .setDuration(200)
-                                .scaleXBy(-0.3F)
-                                .scaleYBy(-0.3F)
-                                .setInterpolator(DecelerateInterpolator())
-                                .withEndAction {
-                                    binding.ideasFragmentAddIdeaCard.animate()
-                                            .setDuration(500)
-                                            .scaleX(0.01F)
-                                            .scaleY(0.01F)
-                                            .setInterpolator(AnticipateInterpolator())
-                                            .withEndAction { binding.ideasFragmentAddIdeaCard.visibility = View.GONE }
-                                            .start()
-                                }
-                                .start()
-                    }
-                    .start()
+            val action2 = Runnable {
+                binding.ideasFragmentAddIdeaCard.visibility = View.GONE
+            }
+            val action1 = Runnable {
+                animateAddIdeaCardClose(action2)
+            }
+            animateAddIdeaCardButtonClick(action1)
         }
     }
 
@@ -121,5 +97,20 @@ class IdeasFragment @Inject constructor(@Named("IdeasViewModelFactory") private 
 
     private fun setupSnackbar() {
         view?.setupSnackbar(this, viewModel.snackBarEvent)
+    }
+
+    private fun animateAddIdeaCardClose(action:Runnable) {
+        binding.ideasFragmentAddIdeaCard.makeAnimationScale(500, 0.01, 0.01, AnticipateInterpolator(), action)
+    }
+
+    private fun animateAddIdeaCardOpen() {
+        binding.ideasFragmentAddIdeaCard.makeAnimationScale(500, 1.0, 1.0, OvershootInterpolator())
+    }
+
+    private fun animateAddIdeaCardButtonClick(action:Runnable) {
+        val onEndAction = Runnable {
+            binding.ideasFragmentAddIdeaCardButton.makeAnimationScaleBy(200, -0.3, -0.3, DecelerateInterpolator(), action)
+        }
+        binding.ideasFragmentAddIdeaCardButton.makeAnimationScaleBy(200, 0.3, 0.3, AccelerateInterpolator(), onEndAction)
     }
 }

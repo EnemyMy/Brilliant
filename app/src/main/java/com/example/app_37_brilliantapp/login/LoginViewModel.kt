@@ -4,21 +4,16 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.app_37_brilliantapp.application.BrilliantApplication
-import com.example.app_37_brilliantapp.data.Repository
+import com.example.app_37_brilliantapp.Event
 import com.example.app_37_brilliantapp.util.SnackbarEvent
-import com.example.app_37_brilliantapp.util.isValidEmail
-import com.example.app_37_brilliantapp.util.isValidName
-import com.example.app_37_brilliantapp.util.isValidPassword
 import com.google.firebase.auth.FirebaseAuth
-import javax.inject.Inject
 
-class LoginViewModel (private val repository: Repository): ViewModel() {
+class LoginViewModel: ViewModel() {
 
     private val auth by lazy { FirebaseAuth.getInstance() }
 
-    private val _mainMenuEvent = MutableLiveData<Unit>()
-    val mainMenuEvent: LiveData<Unit> = _mainMenuEvent
+    private val _mainMenuEvent = MutableLiveData<Event<Unit>>()
+    val mainMenuEvent: LiveData<Event<Unit>> = _mainMenuEvent
 
     private val _snackBarEvent = MutableLiveData<SnackbarEvent>()
     val snackBarEvent: LiveData<SnackbarEvent> = _snackBarEvent
@@ -31,8 +26,10 @@ class LoginViewModel (private val repository: Repository): ViewModel() {
 
     fun startLoginEvent() {
         Log.e("FirebaseAuth", "Start login. Current user: ${auth.currentUser}. Email: ${email.value} Password: ${password.value}")
-        if (validateFields())
-            auth.signInWithEmailAndPassword(email.value!!, password.value!!).addOnCompleteListener { task ->
+        val email = email.value ?: ""
+        val password = password.value ?: ""
+        if (validateFields(email, password))
+            auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.e(
                         "FirebaseAuth",
@@ -57,17 +54,19 @@ class LoginViewModel (private val repository: Repository): ViewModel() {
     }
 
     private fun startMainMenuEvent() {
-        _mainMenuEvent.value = Unit
+        _mainMenuEvent.value = Event(Unit)
     }
 
     fun startSnackbarEvent(event: SnackbarEvent) {
         _snackBarEvent.value = event
     }
 
-    private fun validateFields(): Boolean {
-        if (email.value != null && password.value != null)
-            return email.value!!.isValidEmail() && password.value!!.isValidPassword()
-        return false
+    private fun validateFields(email: String, password: String): Boolean {
+        return email.isNotEmpty()
+                && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+                && password.isNotEmpty()
+                && password.length >= 8
+                && password.contains(Regex("\\d"))
     }
 
 }
