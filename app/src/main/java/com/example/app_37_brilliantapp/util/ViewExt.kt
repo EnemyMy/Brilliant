@@ -4,10 +4,12 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.example.app_37_brilliantapp.Event
+import com.example.app_37_brilliantapp.EventObserver
 import com.google.android.material.snackbar.Snackbar
 
-fun View.setupSnackbar(owner: LifecycleOwner, event: LiveData<SnackbarEvent>) {
-    event.observe(owner, Observer {
+fun View.setupSnackbar(owner: LifecycleOwner, event: LiveData<Event<SnackbarEvent>>) {
+    event.observe(owner, EventObserver {
         showSnackbar(it)
     })
 }

@@ -15,8 +15,8 @@ class LoginViewModel: ViewModel() {
     private val _mainMenuEvent = MutableLiveData<Event<Unit>>()
     val mainMenuEvent: LiveData<Event<Unit>> = _mainMenuEvent
 
-    private val _snackBarEvent = MutableLiveData<SnackbarEvent>()
-    val snackBarEvent: LiveData<SnackbarEvent> = _snackBarEvent
+    private val _snackBarEvent = MutableLiveData<Event<SnackbarEvent>>()
+    val snackBarEvent: LiveData<Event<SnackbarEvent>> = _snackBarEvent
 
     //two-way databinding
     val email = MutableLiveData<String>()
@@ -46,20 +46,17 @@ class LoginViewModel: ViewModel() {
                 }
             }
         else
-            startSnackbarEvent(SnackbarEvent("Field validation failed"))
+            showSnackbar(SnackbarEvent("Field validation failed"))
     }
 
-    private fun showSnackbar(snackbarEvent: SnackbarEvent) {
-        _snackBarEvent.value = snackbarEvent
+    fun showSnackbar(event: SnackbarEvent) {
+        _snackBarEvent.value = Event(event)
     }
 
     private fun startMainMenuEvent() {
         _mainMenuEvent.value = Event(Unit)
     }
 
-    fun startSnackbarEvent(event: SnackbarEvent) {
-        _snackBarEvent.value = event
-    }
 
     private fun validateFields(email: String, password: String): Boolean {
         return email.isNotEmpty()

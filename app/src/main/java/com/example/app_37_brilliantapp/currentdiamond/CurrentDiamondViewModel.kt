@@ -6,6 +6,7 @@ import com.example.app_37_brilliantapp.Event
 import com.example.app_37_brilliantapp.Result
 import com.example.app_37_brilliantapp.data.CurrentDiamond
 import com.example.app_37_brilliantapp.data.InvalidEmailException
+import com.example.app_37_brilliantapp.data.NoSuchDocumentException
 import com.example.app_37_brilliantapp.util.SnackbarEvent
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -59,18 +60,18 @@ class CurrentDiamondViewModel (private val repository: CurrentDiamondRepository)
         }
     }
 
-    private val _snackBarEvent = MutableLiveData<SnackbarEvent>()
-    val snackBarEvent: LiveData<SnackbarEvent> = _snackBarEvent
+    private val _snackBarEvent = MutableLiveData<Event<SnackbarEvent>>()
+    val snackBarEvent: LiveData<Event<SnackbarEvent>> = _snackBarEvent
 
     private fun handleResult(data: Result<CurrentDiamond>): LiveData<CurrentDiamond> {
         val result = MutableLiveData<CurrentDiamond>(null)
         when(data) {
             is Result.Success -> result.value = data.data
             is Result.Error -> {
-                if (data.exception !is InvalidEmailException)
-                    showSnackbar(SnackbarEvent("Error while loading diamond. Using offline data", Snackbar.LENGTH_LONG))
-                else
+                if (data.exception is InvalidEmailException)
                     showSnackbar(SnackbarEvent("Error while handling email. Check your login data", Snackbar.LENGTH_LONG))
+                else if (data.exception !is NoSuchDocumentException)
+                    showSnackbar(SnackbarEvent("Error while loading diamond. Using offline data", Snackbar.LENGTH_LONG))
             }
         }
         Log.e("MLD currentDiamond", "End handling result. Result: ${result.value}")
@@ -103,7 +104,7 @@ class CurrentDiamondViewModel (private val repository: CurrentDiamondRepository)
     }
 
     fun showSnackbar(event: SnackbarEvent) {
-        _snackBarEvent.value = event
+        _snackBarEvent.value = Event(event)
     }
 
 }

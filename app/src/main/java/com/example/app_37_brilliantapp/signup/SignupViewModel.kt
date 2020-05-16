@@ -25,8 +25,8 @@ class SignupViewModel: ViewModel() {
     private val _mainMenuEvent = MutableLiveData<Event<Unit>>()
     val mainMenuEvent: LiveData<Event<Unit>> = _mainMenuEvent
 
-    private val _snackBarEvent = MutableLiveData<SnackbarEvent>()
-    val snackBarEvent: LiveData<SnackbarEvent> = _snackBarEvent
+    private val _snackBarEvent = MutableLiveData<Event<SnackbarEvent>>()
+    val snackBarEvent: LiveData<Event<SnackbarEvent>> = _snackBarEvent
 
     //two-way databinding
     val email = MutableLiveData<String>()
@@ -75,7 +75,7 @@ class SignupViewModel: ViewModel() {
     }
 
     fun showSnackbar(event: SnackbarEvent) {
-        _snackBarEvent.value = event
+        _snackBarEvent.value = Event(event)
     }
 
     private fun validateFields(email: String, password: String, name: String): Boolean {

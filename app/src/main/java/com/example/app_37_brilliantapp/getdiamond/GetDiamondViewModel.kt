@@ -31,8 +31,8 @@ class GetDiamondViewModel (private val repository: GetDiamondRepository): ViewMo
     private val _getDiamondEvent = MutableLiveData<Unit>()
     val getDiamondEvent: LiveData<Unit> = _getDiamondEvent
 
-    private val _snackbarEvent = MutableLiveData<SnackbarEvent>()
-    val snackbarEvent: LiveData<SnackbarEvent> = _snackbarEvent
+    private val _snackbarEvent = MutableLiveData<Event<SnackbarEvent>>()
+    val snackbarEvent: LiveData<Event<SnackbarEvent>> = _snackbarEvent
 
     //two way databinding
     val rating = MutableLiveData<Float>()
@@ -66,7 +66,7 @@ class GetDiamondViewModel (private val repository: GetDiamondRepository): ViewMo
     }
 
     fun showSnackbar(event: SnackbarEvent) {
-        _snackbarEvent.value = event
+        _snackbarEvent.value = Event(event)
     }
 
     private fun startDiamondSuccessfullySavedEvent() {

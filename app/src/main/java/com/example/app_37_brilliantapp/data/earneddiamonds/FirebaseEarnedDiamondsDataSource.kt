@@ -32,7 +32,7 @@ class FirebaseEarnedDiamondsDataSource @Inject constructor(): EarnedDiamondsData
             if (e != null)
                 earnedDiamond.value = Result.Error(e)
             else {
-                if (value?.isEmpty == true)
+                if (value?.isEmpty == false)
                     earnedDiamond.value = Result.Success(value.toObjects(EarnedDiamond::class.java))
                 else
                     earnedDiamond.value = Result.Error(NoSuchDocumentException())

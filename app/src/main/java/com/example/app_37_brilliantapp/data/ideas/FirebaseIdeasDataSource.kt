@@ -32,7 +32,7 @@ class FirebaseIdeasDataSource @Inject constructor(): IdeasDataSource {
                 idea.value = Result.Error(e)
             }
             else {
-                if (value?.isEmpty == true)
+                if (value?.isEmpty == false)
                     idea.value = Result.Success(value.toObjects(Idea::class.java))
                 else
                     idea.value = Result.Error(NoSuchDocumentException())

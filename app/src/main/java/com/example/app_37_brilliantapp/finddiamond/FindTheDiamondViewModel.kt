@@ -29,8 +29,8 @@ class FindTheDiamondViewModel (private val repository: FindDiamondRepository): V
     private val _saveDiamondEvent = MutableLiveData<Event<Unit>>()
     val saveDiamondEvent: LiveData<Event<Unit>> = _saveDiamondEvent
 
-    private val _snackBarEvent = MutableLiveData<SnackbarEvent>()
-    val snackBarEvent: LiveData<SnackbarEvent> = _snackBarEvent
+    private val _snackBarEvent = MutableLiveData<Event<SnackbarEvent>>()
+    val snackBarEvent: LiveData<Event<SnackbarEvent>> = _snackBarEvent
 
     fun setPolishTime(view: View) {
         (view as? EditText)?.showDateTimePickerDialog()
@@ -74,7 +74,7 @@ class FindTheDiamondViewModel (private val repository: FindDiamondRepository): V
         }
     }
 
-    fun showSnackbar(event: SnackbarEvent) = viewModelScope.launch(Dispatchers.Main) { _snackBarEvent.value = event }
+    fun showSnackbar(event: SnackbarEvent) = viewModelScope.launch(Dispatchers.Main) { _snackBarEvent.value = Event(event) }
 
     private fun notifySaveDiamondEventEnd() = viewModelScope.launch(Dispatchers.Main) { _saveDiamondEvent.value = Event(Unit) }
 

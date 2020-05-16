@@ -2,6 +2,7 @@ package com.example.app_37_brilliantapp.earneddiamonds
 
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.app_37_brilliantapp.Event
 import com.example.app_37_brilliantapp.data.EarnedDiamond
 import com.google.firebase.auth.FirebaseAuth
 import com.example.app_37_brilliantapp.Result
@@ -29,8 +30,8 @@ class EarnedDiamondsViewModel (private val repository: EarnedDiamondsRepository)
         earnedDiamonds.value?.size?.toString() ?: "0"
     }
 
-    private val _snackbarEvent = MutableLiveData<SnackbarEvent>()
-    val snackbarEvent: LiveData<SnackbarEvent> = _snackbarEvent
+    private val _snackbarEvent = MutableLiveData<Event<SnackbarEvent>>()
+    val snackbarEvent: LiveData<Event<SnackbarEvent>> = _snackbarEvent
 
     fun handleResult(data: Result<List<EarnedDiamond>>): LiveData<List<EarnedDiamond>> {
         val result = MutableLiveData<List<EarnedDiamond>>(null)
@@ -47,7 +48,7 @@ class EarnedDiamondsViewModel (private val repository: EarnedDiamondsRepository)
     }
 
     fun showSnackbar(event: SnackbarEvent) {
-        _snackbarEvent.value = event
+        _snackbarEvent.value = Event(event)
     }
 
 }

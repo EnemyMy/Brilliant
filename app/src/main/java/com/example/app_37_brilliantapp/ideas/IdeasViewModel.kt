@@ -3,6 +3,7 @@ package com.example.app_37_brilliantapp.ideas
 import android.text.format.DateUtils
 import android.util.Log
 import androidx.lifecycle.*
+import com.example.app_37_brilliantapp.Event
 import com.example.app_37_brilliantapp.Result
 import com.example.app_37_brilliantapp.data.Idea
 import com.example.app_37_brilliantapp.data.InvalidEmailException
@@ -36,8 +37,8 @@ class IdeasViewModel (private val repository: IdeasRepository): ViewModel() {
     } as MutableLiveData<Boolean>
     val noIdeas: LiveData<Boolean> = _noIdeas
 
-    private val _snackBarEvent = MutableLiveData<SnackbarEvent>()
-    val snackBarEvent: LiveData<SnackbarEvent> = _snackBarEvent
+    private val _snackBarEvent = MutableLiveData<Event<SnackbarEvent>>()
+    val snackBarEvent: LiveData<Event<SnackbarEvent>> = _snackBarEvent
 
     //two-way databinding
     val newIdeaName = MutableLiveData<String>()
@@ -59,7 +60,7 @@ class IdeasViewModel (private val repository: IdeasRepository): ViewModel() {
 
     fun createIdea(): Boolean {
         val name = newIdeaName.value ?: ""
-        if (validateName(name)) {
+        if (!validateName(name)) {
             showSnackbar(SnackbarEvent("Please enter correct idea"))
             return false
         }
@@ -102,7 +103,7 @@ class IdeasViewModel (private val repository: IdeasRepository): ViewModel() {
     }
 
     fun showSnackbar(event: SnackbarEvent) {
-        _snackBarEvent.value = event
+        _snackBarEvent.value = Event(event)
     }
 
     fun validateName(name: String): Boolean = name != ""
