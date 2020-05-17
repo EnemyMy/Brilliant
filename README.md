@@ -7,6 +7,7 @@ When you complete it, you choose "Get diamond" and the diamond is put in "Earned
 Also there is an "Ideas" section, where you can track different interesting thoughts or short goals during current day.
 
 # Used technologies
+- MVVM Architecure
 - Kotlin
 - Android Architecture Components (Viewmodel, LiveData)
 - Databinding
